@@ -41,7 +41,7 @@
     .text-input:focus{border-color:#10b981}
     @media print{
       body{background:#fff!important;color:#000!important}
-      #top-nav,#wizard-section,#hero-section,#admin-modal,.no-print{display:none!important}
+      #top-nav,#login-section,#wizard-section,#hero-section,#admin-modal,.no-print{display:none!important}
       #dashboard-section{display:block!important}
       .stat-card,.rec-card{break-inside:avoid}
       *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -78,7 +78,7 @@
   </style>
 </head>
 <body>
-<!-- YUQORI HEADER / NAVIGATSIYA (Dark/Light + Admin Panel Tugmasi) -->
+<!-- YUQORI HEADER / NAVIGATSIYA (Dark/Light + Foydalanuvchi + Admin Panel) -->
 <header id="top-nav" class="sticky top-0 z-40 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80 transition-colors">
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
     <div class="flex items-center gap-3">
@@ -92,8 +92,15 @@
         <span class="text-emerald-400 text-xs font-semibold px-2 py-0.5 ml-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">Diagnostika</span>
       </div>
     </div>
-    <!-- O'ng taraf: Dark/Light Mode va Admin Panel Tugmalari -->
+    <!-- O'ng taraf: Foydalanuvchi ismi, Dark/Light Mode va Admin Panel Tugmasi -->
     <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Foydalanuvchi profili badge (login qilgandan keyin ko'rinadi) -->
+      <div id="nav-user-badge" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-slate-200">
+        <span>👤</span>
+        <span id="nav-user-name" class="font-semibold text-emerald-400"></span>
+        <span id="nav-user-age" class="text-slate-400"></span>
+        <button onclick="changeUser()" class="ml-1 text-[11px] text-slate-400 hover:text-cyan-400 underline" title="Boshqa ism bilan kirish">o'zgartirish</button>
+      </div>
       <!-- Dark / Light Mode Tugmasi -->
       <button id="theme-toggle" onclick="toggleTheme()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-700/80 hover:border-slate-500 text-slate-300 hover:text-white transition-all bg-slate-900/60" title="Mavzuni o'zgartirish">
         <span id="theme-icon" class="text-base">🌙</span>
@@ -110,54 +117,81 @@
     </div>
   </div>
 </header>
-<!-- HERO BOLIMI -->
-<div id="hero-section" class="relative overflow-hidden">
-  <div class="absolute inset-0 pointer-events-none">
-    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
-    <div class="absolute -top-20 right-0 w-80 h-80 rounded-full bg-cyan-500/10 blur-3xl"></div>
-  </div>
-  <div class="relative z-10 max-w-5xl mx-auto px-4 pt-12 pb-8 text-center">
-    <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 shadow-2xl shadow-emerald-500/30 mb-5">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h4l3-9 4 18 3-9h4"/>
-      </svg>
+<!-- ============================================================== -->
+<!-- KIRISH EKRANI (ISM VA YOSHNI KIRITISH FORMASI) -->
+<!-- ============================================================== -->
+<div id="login-section" class="relative z-10 min-h-[calc(100vh-65px)] flex items-center justify-center px-4 py-12">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 shadow-2xl shadow-emerald-500/30 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black text-slate-100 mb-2">Xush kelibsiz!</h1>
+      <p class="text-slate-400 text-sm">Shaxsiy fitness tahlilingizni boshlash uchun ismingiz va yoshingizni kiriting.</p>
     </div>
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black mb-3">
-      <span class="grad-text">Smart Fitness</span>
-      <span class="text-slate-400 font-light mx-2">&amp;</span>
-      <span class="text-slate-100">Tana Diagnostikasi</span>
-    </h1>
-    <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-      Shaxsiylashtirilgan sport fani tahlili &middot; BMI &middot; BMR &middot; TDEE &middot; BJU &middot; Suv normasini hisoblash
-    </p>
-    <div class="flex flex-wrap justify-center gap-2.5 sm:gap-3 mt-5">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-medium">&#10003; Ilmiy formulalar</span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs sm:text-sm font-medium">&#9642; Real vaqt tahlili</span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-400 text-xs sm:text-sm font-medium">&#10022; Shaxsiy rejalar</span>
+    <div class="stat-card p-6 sm:p-8 shadow-2xl border border-slate-800">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">👤 Ismingiz</label>
+          <input id="login-name-input" type="text" placeholder="Masalan: Sardor" class="text-input w-full text-sm font-medium" onkeydown="if(event.key==='Enter')document.getElementById(\x27login-age-input\x27).focus()" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">🎂 Yoshingiz</label>
+          <input id="login-age-input" type="number" min="10" max="100" placeholder="Masalan: 24" class="text-input w-full text-sm font-medium" onkeydown="if(event.key==='Enter')startWithUser()" />
+        </div>
+        <div class="pt-2">
+          <button onclick="startWithUser()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold text-sm sm:text-base hover:from-emerald-400 hover:to-cyan-400 transition-all shadow-lg shadow-emerald-500/25 active:scale-95 flex items-center justify-center gap-2">
+            <span>Diagnostikani Boshlash</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+      <p class="text-center text-slate-500 text-xs mt-4">Kiritilgan yosh BMR va metabolizm formulasida aniq hisob-kitob uchun ishlatiladi.</p>
     </div>
   </div>
 </div>
-<!-- QADAM BOLIMI -->
-<div id="wizard-section" class="max-w-2xl mx-auto px-4 pb-20">
-  <div class="mb-8">
-    <div class="flex justify-between items-center mb-2">
-      <span class="text-sm text-slate-500 font-medium" id="step-label">1 / 9-qadam</span>
-      <span class="text-sm text-emerald-400 font-semibold" id="step-pct">0%</span>
+<!-- HERO VA WIZARD KONTEYNERI (KIRGANDAN SO'NG KO'RINADI) -->
+<div id="main-app-container" class="hidden">
+  <!-- HERO BOLIMI -->
+  <div id="hero-section" class="relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
+      <div class="absolute -top-20 right-0 w-80 h-80 rounded-full bg-cyan-500/10 blur-3xl"></div>
     </div>
-    <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-      <div class="progress-fill h-full rounded-full" id="progress-bar" style="width:0%"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-4 pt-10 pb-6 text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 shadow-2xl shadow-emerald-500/30 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-black mb-2">
+        <span class="grad-text">Smart Fitness</span> <span class="text-slate-400 font-light">&amp;</span> <span class="text-slate-100">Tana Diagnostikasi</span>
+      </h1>
+      <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">Salom, <strong id="hero-greeting-name" class="text-emerald-400">Mehmon</strong>! Shaxsiy sport fani tahlili: BMI &middot; BMR &middot; TDEE &middot; BJU &middot; Suv normasi</p>
     </div>
-    <div class="flex justify-center mt-3 gap-1.5" id="step-dots"></div>
   </div>
-  <div id="step-card" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl min-h-80 flex flex-col transition-all">
-    <div id="step-content" class="flex-1"></div>
-    <div class="flex items-center justify-between mt-8 pt-6 border-t border-slate-800">
-      <button id="btn-back" onclick="navigateStep(-1)" class="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-700 text-slate-400 font-medium hover:border-slate-600 hover:text-slate-200 transition-all disabled:opacity-30 disabled:cursor-not-allowed">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> Orqaga
-      </button>
-      <button id="btn-next" onclick="navigateStep(1)" class="flex items-center gap-2 px-7 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold hover:from-emerald-400 hover:to-cyan-400 transition-all shadow-lg shadow-emerald-500/25 active:scale-95">
-        Davom etish <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-      </button>
+  <!-- QADAM BOLIMI -->
+  <div id="wizard-section" class="max-w-2xl mx-auto px-4 pb-20">
+    <div class="mb-8">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-sm text-slate-500 font-medium" id="step-label">1 / 9-qadam</span>
+        <span class="text-sm text-emerald-400 font-semibold" id="step-pct">0%</span>
+      </div>
+      <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+        <div class="progress-fill h-full rounded-full" id="progress-bar" style="width:0%"></div>
+      </div>
+      <div class="flex justify-center mt-3 gap-1.5" id="step-dots"></div>
+    </div>
+    <div id="step-card" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl min-h-80 flex flex-col transition-all">
+      <div id="step-content" class="flex-1"></div>
+      <div class="flex items-center justify-between mt-8 pt-6 border-t border-slate-800">
+        <button id="btn-back" onclick="navigateStep(-1)" class="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-700 text-slate-400 font-medium hover:border-slate-600 hover:text-slate-200 transition-all disabled:opacity-30 disabled:cursor-not-allowed">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> Orqaga
+        </button>
+        <button id="btn-next" onclick="navigateStep(1)" class="flex items-center gap-2 px-7 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold hover:from-emerald-400 hover:to-cyan-400 transition-all shadow-lg shadow-emerald-500/25 active:scale-95">
+          Davom etish <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -280,7 +314,6 @@
       </div>
       <button onclick="closeAdminModal()" class="w-9 h-9 rounded-xl border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-500 transition-all">✕</button>
     </div>
-    <!-- Admin parol tekshiruvi -->
     <div id="admin-auth-view" class="py-10 max-w-sm mx-auto text-center">
       <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mx-auto mb-4 text-2xl">🔐</div>
       <h4 class="text-lg font-bold text-slate-100 mb-1">Admin Kirish</h4>
@@ -291,17 +324,16 @@
       </div>
       <p id="admin-auth-error" class="text-rose-400 text-xs mt-2 hidden">Parol noto'g'ri!</p>
     </div>
-    <!-- Admin Asosiy Ma'lumotlar Ko'rinishi -->
     <div id="admin-data-view" class="hidden pt-5 space-y-6">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div class="stat-card !p-4"><p class="text-xs text-slate-500 font-semibold uppercase">Jami Kirganlar</p><p id="adm-total-visitors" class="text-2xl font-black grad-text mt-1">0</p><span class="text-[11px] text-slate-500">Ilovaga kirganlar</span></div>
         <div class="stat-card !p-4"><p class="text-xs text-slate-500 font-semibold uppercase">Tahlil Qilganlar</p><p id="adm-completed-tests" class="text-2xl font-black text-emerald-400 mt-1">0</p><span class="text-[11px] text-slate-500">To'liq hisoblaganlar</span></div>
-        <div class="stat-card !p-4"><p class="text-xs text-slate-500 font-semibold uppercase">O'rtacha Vazn</p><p id="adm-avg-weight" class="text-2xl font-black text-cyan-400 mt-1">0 kg</p><span class="text-[11px] text-slate-500">Foydalanuvchilar</span></div>
+        <div class="stat-card !p-4"><p class="text-xs text-slate-500 font-semibold uppercase">O'rtacha Yosh / Vazn</p><p id="adm-avg-weight" class="text-2xl font-black text-cyan-400 mt-1">0 yosh</p><span class="text-[11px] text-slate-500">O'rtacha ko'rsatkich</span></div>
         <div class="stat-card !p-4"><p class="text-xs text-slate-500 font-semibold uppercase">Erkak / Ayol</p><p id="adm-gender-ratio" class="text-2xl font-black text-violet-400 mt-1">0 / 0</p><span class="text-[11px] text-slate-500">Jinsiy nisbat</span></div>
       </div>
       <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
         <div class="flex items-center gap-2 flex-1 min-w-[220px]">
-          <input id="admin-search-input" type="text" placeholder="Ism yoki sana bo'yicha qidirish..." oninput="filterAdminLogs()" class="text-input w-full text-xs sm:text-sm py-2" />
+          <input id="admin-search-input" type="text" placeholder="Ism, yosh yoki sana bo'yicha qidirish..." oninput="filterAdminLogs()" class="text-input w-full text-xs sm:text-sm py-2" />
         </div>
         <div class="flex items-center gap-2">
           <button onclick="exportVisitorsCSV()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-700 hover:border-emerald-500 text-slate-300 hover:text-emerald-400 text-xs font-semibold transition-all">📥 CSV Yuklash</button>
@@ -312,7 +344,7 @@
         <div class="overflow-x-auto max-h-80">
           <table class="w-full text-left text-xs sm:text-sm">
             <thead class="bg-slate-800/80 sticky top-0 text-slate-400 font-semibold uppercase text-[11px] tracking-wider">
-              <tr><th class="py-3 px-3.5"># ID</th><th class="py-3 px-3.5">Ism / Foydalanuvchi</th><th class="py-3 px-3.5">Kirgan Vaqt</th><th class="py-3 px-3.5">Jinsi</th><th class="py-3 px-3.5">Bo'y / Vazn</th><th class="py-3 px-3.5">Maqsad</th><th class="py-3 px-3.5">BMI / TDEE</th><th class="py-3 px-3.5 text-right">Holat</th></tr>
+              <tr><th class="py-3 px-3.5"># ID</th><th class="py-3 px-3.5">Ism</th><th class="py-3 px-3.5">Yosh</th><th class="py-3 px-3.5">Kirgan Vaqt</th><th class="py-3 px-3.5">Jinsi</th><th class="py-3 px-3.5">Bo'y / Vazn</th><th class="py-3 px-3.5">Maqsad</th><th class="py-3 px-3.5">BMI / TDEE</th><th class="py-3 px-3.5 text-right">Holat</th></tr>
             </thead>
             <tbody id="admin-table-body" class="divide-y divide-slate-800/60 text-slate-300"></tbody>
           </table>
@@ -325,18 +357,45 @@
 <script>
 const STORAGE_KEY_LOGS = "smart_fitness_visitors_v2";
 const STORAGE_KEY_THEME = "smart_fitness_theme_v2";
+const STORAGE_KEY_USER = "smart_fitness_current_user_v2";
 const ADMIN_PASS = "admin";
 let currentVisitor = null;
 function getStoredLogs(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY_LOGS))||[]; }catch(e){ return []; } }
 function saveLogs(logs){ localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs)); updateNavBadge(); }
-function initVisitorSession(){
+function startWithUser(){
+  const nameInput = document.getElementById("login-name-input");
+  const ageInput = document.getElementById("login-age-input");
+  const name = nameInput.value.trim();
+  const age = parseInt(ageInput.value, 10);
+  if(!name){ showToast("Iltimos, ismingizni kiriting!"); nameInput.focus(); return; }
+  if(!age || age < 10 || age > 100){ showToast("Iltimos, yoshingizni to\x27g\x27ri kiriting (10 - 100)!"); ageInput.focus(); return; }
+  state.data.name = name; state.data.age = age;
+  localStorage.setItem(STORAGE_KEY_USER, JSON.stringify({name, age}));
   const logs = getStoredLogs();
   const visitorId = "USR-" + (logs.length + 1).toString().padStart(4, "0");
   const now = new Date();
   const timeStr = now.toLocaleDateString("uz-UZ", { day:"2-digit", month:"2-digit", year:"numeric" }) + " " + now.toLocaleTimeString("uz-UZ", { hour:"2-digit", minute:"2-digit" });
-  currentVisitor = { id: visitorId, name: "Foydalanuvchi #" + (logs.length + 1), timestamp: timeStr, gender: null, height: 170, weight: 70, goal: null, targetWeight: null, bmi: null, tdee: null, completed: false };
-  logs.push(currentVisitor);
-  saveLogs(logs);
+  currentVisitor = { id: visitorId, name: name, age: age, timestamp: timeStr, gender: null, height: 170, weight: 70, goal: null, targetWeight: null, bmi: null, tdee: null, completed: false };
+  logs.push(currentVisitor); saveLogs(logs);
+  setupUserUI();
+  document.getElementById("login-section").classList.add("hidden");
+  document.getElementById("main-app-container").classList.remove("hidden");
+  renderStep();
+}
+function setupUserUI(){
+  if(!state.data.name) return;
+  document.getElementById("nav-user-name").textContent = state.data.name;
+  document.getElementById("nav-user-age").textContent = "(" + state.data.age + " yosh)";
+  document.getElementById("nav-user-badge").classList.remove("hidden");
+  document.getElementById("hero-greeting-name").textContent = state.data.name;
+}
+function changeUser(){
+  document.getElementById("login-section").classList.remove("hidden");
+  document.getElementById("main-app-container").classList.add("hidden");
+  document.getElementById("dashboard-section").classList.add("hidden");
+  document.getElementById("login-name-input").value = state.data.name || "";
+  document.getElementById("login-age-input").value = state.data.age || "";
+  document.getElementById("login-name-input").focus();
 }
 function updateCurrentVisitor(updates){ if(!currentVisitor) return; Object.assign(currentVisitor, updates); const logs = getStoredLogs(); const idx = logs.findIndex(i => i.id === currentVisitor.id); if(idx !== -1){ logs[idx] = currentVisitor; saveLogs(logs); } }
 function updateNavBadge(){ const logs = getStoredLogs(); const b = document.getElementById("nav-visitor-badge"); if(b) b.textContent = logs.length; }
@@ -352,28 +411,43 @@ function openAdminModal(){ document.getElementById("admin-modal").classList.remo
 function closeAdminModal(){ document.getElementById("admin-modal").classList.add("hidden"); document.body.style.overflow = ""; }
 function loginAdmin(){ const input = document.getElementById("admin-pass-input"); const err = document.getElementById("admin-auth-error"); if(input.value.trim() === ADMIN_PASS){ isAdminLoggedIn = true; err.classList.add("hidden"); input.value = ""; showAdminDashboard(); }else{ err.classList.remove("hidden"); } }
 function showAdminDashboard(){ document.getElementById("admin-auth-view").classList.add("hidden"); document.getElementById("admin-data-view").classList.remove("hidden"); renderAdminStats(); renderAdminTable(); }
-function renderAdminStats(){ const logs = getStoredLogs(); const total = logs.length; const completed = logs.filter(l => l.completed).length; const weights = logs.map(l => Number(l.weight)).filter(w => !isNaN(w) && w > 0); const avgWeight = weights.length ? Math.round(weights.reduce((a, b) => a + b, 0) / weights.length) : 0; const male = logs.filter(l => l.gender === "male").length; const female = logs.filter(l => l.gender === "female").length; document.getElementById("adm-total-visitors").textContent = total; document.getElementById("adm-completed-tests").textContent = completed; document.getElementById("adm-avg-weight").textContent = avgWeight + " kg"; document.getElementById("adm-gender-ratio").textContent = male + " ♂ / " + female + " ♀"; }
-function renderAdminTable(filterText = ""){ let logs = getStoredLogs().slice().reverse(); if(filterText){ const q = filterText.toLowerCase(); logs = logs.filter(l => (l.name && l.name.toLowerCase().includes(q)) || (l.id && l.id.toLowerCase().includes(q)) || (l.timestamp && l.timestamp.toLowerCase().includes(q))); } const tbody = document.getElementById("admin-table-body"); const empty = document.getElementById("admin-table-empty"); tbody.innerHTML = ""; if(logs.length === 0){ empty.classList.remove("hidden"); return; } empty.classList.add("hidden"); const goalMap = { lose: "<span class=\"text-rose-400\">📉 Vazn tashlash</span>", maintain: "<span class=\"text-cyan-400\">⚖️ Saqlash</span>", gain: "<span class=\"text-emerald-400\">💪 Mushak olish</span>" }; logs.forEach(l => { const tr = document.createElement("tr"); tr.className = "hover:bg-slate-800/40 transition-colors"; tr.innerHTML = `<td class=\"py-2.5 px-3.5 font-mono text-[11px] text-slate-400\">${l.id}</td><td class=\"py-2.5 px-3.5 font-semibold text-slate-200\"><input type=\"text\" value=\"${escapeHTML(l.name || "Mehmon")}\" onchange=\"updateVisitorName(\x27${l.id}\x27, this.value)\" class=\"bg-transparent border-b border-transparent hover:border-slate-600 focus:border-emerald-500 outline-none w-32 text-xs py-0.5\" title=\"Nomini tahrirlash mumkin\" /></td><td class=\"py-2.5 px-3.5 text-slate-400 text-xs\">${l.timestamp || "—"}</td><td class=\"py-2.5 px-3.5 text-xs\">${l.gender === "male" ? "👨 Erkak" : l.gender === "female" ? "👩 Ayol" : "—"}</td><td class=\"py-2.5 px-3.5 text-xs\">${l.height || "—"} sm / ${l.weight || "—"} kg</td><td class=\"py-2.5 px-3.5 text-xs\">${goalMap[l.goal] || "—"}</td><td class=\"py-2.5 px-3.5 text-xs font-mono\">${l.bmi ? "BMI " + l.bmi : "—"}${l.tdee ? " / " + l.tdee + " kkal" : ""}</td><td class=\"py-2.5 px-3.5 text-right\">${l.completed ? "<span class=\"px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/30\">Tugallangan</span>" : "<span class=\"px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 text-[10px] font-semibold border border-amber-500/20\">Jarayonda</span>"}</td>`; tbody.appendChild(tr); }); }
+function renderAdminStats(){
+  const logs = getStoredLogs(); const total = logs.length; const completed = logs.filter(l => l.completed).length;
+  const ages = logs.map(l => Number(l.age)).filter(a => !isNaN(a) && a > 0); const avgAge = ages.length ? Math.round(ages.reduce((a, b) => a + b, 0) / ages.length) : 0;
+  const male = logs.filter(l => l.gender === "male").length; const female = logs.filter(l => l.gender === "female").length;
+  document.getElementById("adm-total-visitors").textContent = total;
+  document.getElementById("adm-completed-tests").textContent = completed;
+  document.getElementById("adm-avg-weight").textContent = avgAge + " yosh";
+  document.getElementById("adm-gender-ratio").textContent = male + " ♂ / " + female + " ♀";
+}
+function renderAdminTable(filterText = ""){
+  let logs = getStoredLogs().slice().reverse();
+  if(filterText){ const q = filterText.toLowerCase(); logs = logs.filter(l => (l.name && l.name.toLowerCase().includes(q)) || (l.id && l.id.toLowerCase().includes(q)) || (l.timestamp && l.timestamp.toLowerCase().includes(q)) || (l.age && l.age.toString().includes(q))); }
+  const tbody = document.getElementById("admin-table-body"); const empty = document.getElementById("admin-table-empty"); tbody.innerHTML = "";
+  if(logs.length === 0){ empty.classList.remove("hidden"); return; } empty.classList.add("hidden");
+  const goalMap = { lose: "<span class=\"text-rose-400\">📉 Vazn tashlash</span>", maintain: "<span class=\"text-cyan-400\">⚖️ Saqlash</span>", gain: "<span class=\"text-emerald-400\">💪 Mushak olish</span>" };
+  logs.forEach(l => { const tr = document.createElement("tr"); tr.className = "hover:bg-slate-800/40 transition-colors"; tr.innerHTML = `<td class=\"py-2.5 px-3.5 font-mono text-[11px] text-slate-400\">${l.id}</td><td class=\"py-2.5 px-3.5 font-semibold text-slate-200\"><input type=\"text\" value=\"${escapeHTML(l.name || "Mehmon")}\" onchange=\"updateVisitorName(\x27${l.id}\x27, this.value)\" class=\"bg-transparent border-b border-transparent hover:border-slate-600 focus:border-emerald-500 outline-none w-28 text-xs py-0.5\" title=\"Nomini tahrirlash\" /></td><td class=\"py-2.5 px-3.5 text-slate-300 text-xs font-semibold\">${l.age ? l.age + " yosh" : "—"}</td><td class=\"py-2.5 px-3.5 text-slate-400 text-xs\">${l.timestamp || "—"}</td><td class=\"py-2.5 px-3.5 text-xs\">${l.gender === "male" ? "👨 Erkak" : l.gender === "female" ? "👩 Ayol" : "—"}</td><td class=\"py-2.5 px-3.5 text-xs\">${l.height || "—"} sm / ${l.weight || "—"} kg</td><td class=\"py-2.5 px-3.5 text-xs\">${goalMap[l.goal] || "—"}</td><td class=\"py-2.5 px-3.5 text-xs font-mono\">${l.bmi ? "BMI " + l.bmi : "—"}${l.tdee ? " / " + l.tdee + " kkal" : ""}</td><td class=\"py-2.5 px-3.5 text-right\">${l.completed ? "<span class=\"px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/30\">Tugallangan</span>" : "<span class=\"px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 text-[10px] font-semibold border border-amber-500/20\">Jarayonda</span>"}</td>`; tbody.appendChild(tr); });
+}
 function updateVisitorName(id, newName){ const logs = getStoredLogs(); const target = logs.find(l => l.id === id); if(target){ target.name = newName.trim() || target.name; saveLogs(logs); showToast("Ism saqlandi"); } }
 function filterAdminLogs(){ const val = document.getElementById("admin-search-input").value; renderAdminTable(val); }
 function clearAdminLogs(){ if(confirm("Haqiqatdan ham barcha foydalanuvchilar tarixini o'chirib tashlamoqchimisiz?")){ saveLogs([]); renderAdminStats(); renderAdminTable(); showToast("Barcha yozuvlar tozalandi!"); } }
-function exportVisitorsCSV(){ const logs = getStoredLogs(); if(!logs.length){ showToast("Eksport qilish uchun ma'lumot yo'q."); return; } const headers = ["ID", "Foydalanuvchi", "Kirgan Vaqt", "Jinsi", "Boy (sm)", "Vazn (kg)", "Maqsad", "BMI", "TDEE (kkal)", "Holat"]; const csvRows = [headers.join(",")]; logs.forEach(l => { csvRows.push([ `"${l.id || ""}"`, `"${(l.name || "").replace(/"/g, "\"\"")}"`, `"${l.timestamp || ""}"`, `"${l.gender || ""}"`, `"${l.height || ""}"`, `"${l.weight || ""}"`, `"${l.goal || ""}"`, `"${l.bmi || ""}"`, `"${l.tdee || ""}"`, `"${l.completed ? "Tugallangan" : "Jarayonda"}"` ].join(",")); }); const blob = new Blob(["\uFEFF" + csvRows.join("\n")], { type: "text/csv;charset=utf-8;" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `smart-fitness-foydalanuvchilar-${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+function exportVisitorsCSV(){ const logs = getStoredLogs(); if(!logs.length){ showToast("Eksport qilish uchun ma'lumot yo'q."); return; } const headers = ["ID", "Ism", "Yosh", "Kirgan Vaqt", "Jinsi", "Boy (sm)", "Vazn (kg)", "Maqsad", "BMI", "TDEE (kkal)", "Holat"]; const csvRows = [headers.join(",")]; logs.forEach(l => { csvRows.push([ `"${l.id || ""}"`, `"${(l.name || "").replace(/"/g, "\"\"")}"`, `"${l.age || ""}"`, `"${l.timestamp || ""}"`, `"${l.gender || ""}"`, `"${l.height || ""}"`, `"${l.weight || ""}"`, `"${l.goal || ""}"`, `"${l.bmi || ""}"`, `"${l.tdee || ""}"`, `"${l.completed ? "Tugallangan" : "Jarayonda"}"` ].join(",")); }); const blob = new Blob(["\uFEFF" + csvRows.join("\n")], { type: "text/csv;charset=utf-8;" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `smart-fitness-foydalanuvchilar-${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
 function escapeHTML(str){ return String(str).replace(/[&<>"']/g, function(m){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[m]; }); }
-const state={currentStep:0,direction:"forward",data:{gender:null,height:170,weight:70,goal:null,activity:null,targetWeight:null,duration:12,durationUnit:"weeks",water:2.0,sleep:7,age:25}};
+const state={currentStep:0,direction:"forward",data:{name:"",age:25,gender:null,height:170,weight:70,goal:null,activity:null,targetWeight:null,duration:12,durationUnit:"weeks",water:2.0,sleep:7}};
 const ACTIVITY_MAP={sedentary:{label:"Harakatsiz (stol ishi)",mult:1.2},light:{label:"Engil faol (haftasiga 1-2 kun)",mult:1.375},moderate:{label:"O'rtacha faol (haftasiga 3-5 kun)",mult:1.55},high:{label:"Yuqori faol (haftasiga 6-7 kun)",mult:1.725},extreme:{label:"Ekstremal (sportchi / og'ir mehnat)",mult:1.9}};
 const TOTAL_STEPS=9;
 function calcBMI(){const h=state.data.height/100;return(state.data.weight/(h*h)).toFixed(1)}
 function bmiStatus(bmi){const v=parseFloat(bmi);if(v<18.5)return{label:"Kam vazn",color:"#06b6d4",bg:"bg-cyan-500/20",text:"text-cyan-400"};if(v<25)return{label:"Normal",color:"#10b981",bg:"bg-emerald-500/20",text:"text-emerald-400"};if(v<30)return{label:"Ortiqcha vazn",color:"#f59e0b",bg:"bg-amber-500/20",text:"text-amber-400"};return{label:"Semizlik",color:"#ef4444",bg:"bg-rose-500/20",text:"text-rose-400"}}
-function calcBMR(){const{weight:w,height:h,age,gender}=state.data;const base=(10*w)+(6.25*h)-(5*age);return gender==="female"?base-161:base+5}
+function calcBMR(){const{weight:w,height:h,age,gender}=state.data;const userAge = Number(age) || 25; const base=(10*w)+(6.25*h)-(5*userAge);return gender==="female"?base-161:base+5}
 function calcTDEE(){return calcBMR()*(ACTIVITY_MAP[state.data.activity]?.mult||1.2)}
 function calcTargetCalories(){const t=calcTDEE();if(state.data.goal==="lose")return t*0.82;if(state.data.goal==="gain")return t*1.12;return t}
 function calcOptimalWater(){const am={sedentary:0,light:0.3,moderate:0.5,high:0.7,extreme:1.0};return(state.data.weight*35/1000)+(am[state.data.activity]||0)}
 function calcBJU(){const w=state.data.weight,tK=calcTargetCalories(),protein=w*2.1,fat=w*0.9,pK=protein*4,fK=fat*9,cK=Math.max(tK-pK-fK,0);return{protein,fat,carb:cK/4,proteinKcal:pK,fatKcal:fK,carbKcal:cK}}
 function calcWeeklyProjection(){const{duration:wks,weight:cur,targetWeight:tgt}=state.data,diff=tgt-cur,pts=[];for(let w=0;w<=Math.min(wks,52);w++){const r=w/wks,e=r<0.5?2*r*r:1-Math.pow(-2*r+2,2)/2;pts.push(+(cur+diff*e).toFixed(2))}return pts}
 function updateWeightBMIPreview(){const el=document.getElementById("weight-bmi-preview");if(!el)return;const bmi=calcBMI(),{label,color}=bmiStatus(bmi);el.innerHTML=`<div class="px-4 py-2 rounded-xl bg-slate-800 border border-slate-700"><p class="text-2xl font-black text-emerald-400">${state.data.weight}</p><p class="text-xs text-slate-500">kg</p></div><div class="px-4 py-2 rounded-xl bg-slate-800 border border-slate-700"><p class="text-2xl font-black" style="color:${color}">${bmi}</p><p class="text-xs text-slate-500">BMI</p></div><div class="px-4 py-2 rounded-xl bg-slate-800 border border-slate-700"><p class="text-base font-bold" style="color:${color}">${label}</p><p class="text-xs text-slate-500">Holat</p></div>`}
-function updateTWPreview(){const el=document.getElementById("tw-preview");if(!el)return;const diff=(state.data.targetWeight-state.data.weight).toFixed(1);el.innerHTML=`<div class="px-4 py-2 rounded-xl bg-slate-800 border border-slate-700"><p class="text-2xl font-black text-cyan-400">${state.data.targetWeight}</p><p class="text-xs text-slate-500">maqsad kg</p></div><div class="px-4 py-2 rounded-xl bg-slate-800 border border-slate-700"><p class="text-2xl font-black ${+diff>0?"text-emerald-400":"text-rose-400"}">${+diff>0?"+":""}${diff}</p><p class="text-xs text-slate-500">farq kg</p></div>`}
+function updateTWPreview(){const el=document.getElementById("tw-preview");if(!el)return;const diff=(state.data.targetWeight-state.data.weight).toFixed(1);el.innerHTML=`<div class="px-4 py-2 rounded-xl bg-slate-800 border border-slate-700"><p class="text-2xl font-black text-cyan-400">${state.data.targetWeight}</p><p class="text-xs text-slate-500">maqsad kg</p></div><div class="px-4 py-2 rounded-xl bg-slate-800 border border-slate-700"><p class="text-2xl font-black ${+diff>0?"text-emerald-400":"text-rose-400"}">${+diff>0?:'}${diff}</p><p class="text-xs text-slate-500">farq kg</p></div>`}
 function updateDurationPreview(){const el=document.getElementById("duration-preview");if(!el)return;const wks=state.data.duration,diff=Math.abs((state.data.targetWeight||state.data.weight)-state.data.weight),rate=diff/wks,risky=rate>1&&state.data.goal==="lose";el.innerHTML=`<div class="rounded-xl bg-slate-800/60 border border-slate-700 p-4"><div class="flex flex-wrap gap-4 text-center justify-center"><div><p class="text-xl font-black text-emerald-400">${wks}</p><p class="text-xs text-slate-500">hafta</p></div><div><p class="text-xl font-black text-cyan-400">${Math.round(wks/4.33)}</p><p class="text-xs text-slate-500">oy</p></div><div><p class="text-xl font-black ${risky?"text-rose-400":"text-violet-400"}">${rate.toFixed(2)}</p><p class="text-xs text-slate-500">kg/hafta</p></div></div>${risky?"<p class=\"mt-3 text-xs text-rose-400 text-center font-medium\">⚠️ Haftasiga 1 kg dan ko'p yo'qotish xavfli! Muddatni uzaytiring.</p>":""}</div>`}
-function updateWaterPreview(){const el=document.getElementById("water-preview");if(!el)return;const opt=calcOptimalWater(),diff=(state.data.water-opt).toFixed(1),ok=state.data.water>=opt;el.innerHTML=`<div class="rounded-xl bg-slate-800/60 border border-slate-700 p-4"><div class="flex gap-4 justify-center text-center flex-wrap"><div><p class="text-xl font-black text-cyan-400">${state.data.water.toFixed(1)}</p><p class="text-xs text-slate-500">hozirgi (L)</p></div><div><p class="text-xl font-black text-emerald-400">${opt.toFixed(1)}</p><p class="text-xs text-slate-500">optimal (L)</p></div><div><p class="text-xl font-black ${ok?"text-emerald-400":"text-rose-400"}">${+diff>0?"+":""}${diff}</p><p class="text-xs text-slate-500">farq</p></div></div><p class="mt-3 text-xs text-center font-medium ${ok?"text-emerald-400":"text-rose-400"}">${ok?"✓ Yetarli suv ichyapsiz!":"💧 Suv kam - lipoliz samaradorligi pasayadi."}</p></div>`}
+function updateWaterPreview(){const el=document.getElementById("water-preview");if(!el)return;const opt=calcOptimalWater(),diff=(state.data.water-opt).toFixed(1),ok=state.data.water>=opt;el.innerHTML=`<div class="rounded-xl bg-slate-800/60 border border-slate-700 p-4"><div class="flex gap-4 justify-center text-center flex-wrap"><div><p class="text-xl font-black text-cyan-400">${state.data.water.toFixed(1)}</p><p class="text-xs text-slate-500">hozirgi (L)</p></div><div><p class="text-xl font-black text-emerald-400">${opt.toFixed(1)}</p><p class="text-xs text-slate-500">optimal (L)</p></div><div><p class="text-xl font-black ${ok?"text-emerald-400":"text-rose-400"}">${+diff>0?:'}${diff}</p><p class="text-xs text-slate-500">farq</p></div></div><p class="mt-3 text-xs text-center font-medium ${ok?"text-emerald-400":"text-rose-400"}">${ok?"✓ Yetarli suv ichyapsiz!":"💧 Suv kam - lipoliz samaradorligi pasayadi."}</p></div>`}
 function updateSleepPreview(){const el=document.getElementById("sleep-preview");if(!el)return;const s=state.data.sleep,ok=s>=7,em=s>=9?"😴":s>=7?"✅":s>=5?"😐":"⚠️";el.innerHTML=`<div class="rounded-xl bg-slate-800/60 border border-slate-700 p-4 flex items-center gap-4"><span class="text-4xl">${em}</span><div><p class="text-xl font-black ${ok?"text-emerald-400":"text-rose-400"}">${s} soat/kecha</p><p class="text-sm ${ok?"text-emerald-400/70":"text-rose-400/70"}">${ok?"Yaxshi uyqu - metabolizm optimal ishlaydi.":"Uyqu kamligi - kortizol ko'tariladi, yog' yoqish sekinlashadi."}</p></div></div>`}
 function setDurUnit(unit){state.data.durationUnit=unit;renderStep()}
 const steps=[
@@ -393,7 +467,7 @@ function renderStep(){const c=document.getElementById("step-content");c.classNam
 function renderDots(){document.getElementById("step-dots").innerHTML=Array.from({length:TOTAL_STEPS},(_,i)=>`<div class="rounded-full transition-all duration-300 ${i===state.currentStep?"w-5 h-2 bg-emerald-400":i<state.currentStep?"w-2 h-2 bg-emerald-700":"w-2 h-2 bg-slate-700"}"></div>`).join("")}
 function showToast(msg){let t=document.getElementById("toast");if(!t){t=document.createElement("div");t.id="toast";t.className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-5 py-3 rounded-xl bg-rose-500 text-white font-semibold text-sm shadow-2xl";document.body.appendChild(t)}t.textContent=msg;t.style.opacity="1";clearTimeout(t._t);t._t=setTimeout(()=>{t.style.opacity="0"},2800)}
 function printReport(){window.print()}
-function resetApp(){state.currentStep=0;state.direction="forward";state.data={gender:null,height:170,weight:70,goal:null,activity:null,targetWeight:null,duration:12,durationUnit:"weeks",water:2.0,sleep:7,age:25};if(dChart){dChart.destroy();dChart=null}if(lChart){lChart.destroy();lChart=null}document.getElementById("dashboard-section").classList.add("hidden");document.getElementById("wizard-section").classList.remove("hidden");document.getElementById("hero-section").classList.remove("hidden");renderStep();window.scrollTo({top:0,behavior:"smooth"})}
+function resetApp(){state.currentStep=0;state.direction="forward";const keepName=state.data.name;const keepAge=state.data.age;state.data={name:keepName,age:keepAge,gender:null,height:170,weight:70,goal:null,activity:null,targetWeight:null,duration:12,durationUnit:"weeks",water:2.0,sleep:7};if(dChart){dChart.destroy();dChart=null}if(lChart){lChart.destroy();lChart=null}document.getElementById("dashboard-section").classList.add("hidden");document.getElementById("wizard-section").classList.remove("hidden");document.getElementById("hero-section").classList.remove("hidden");renderStep();window.scrollTo({top:0,behavior:"smooth"})}
 let dChart,lChart;
 function showDashboard(){
   document.getElementById("wizard-section").classList.add("hidden");
@@ -403,7 +477,7 @@ function showDashboard(){
   const bmi=calcBMI(),bs=bmiStatus(bmi),bmr=Math.round(calcBMR()),tdee=Math.round(calcTDEE()),targetK=Math.round(calcTargetCalories()),optWater=calcOptimalWater(),bju=calcBJU(),totalKcal=Math.round(bju.proteinKcal+bju.fatKcal+bju.carbKcal),actLabel=ACTIVITY_MAP[state.data.activity]?.label||"";
   const goalNames={lose:"Vazn tashlash",maintain:"Vazn saqlash",gain:"Mushak olish"};
   updateCurrentVisitor({ gender: state.data.gender, height: state.data.height, weight: state.data.weight, goal: state.data.goal, targetWeight: state.data.targetWeight, bmi: bmi, tdee: tdee, completed: true });
-  document.getElementById("summary-banner").innerHTML=`<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center flex-shrink-0 text-2xl">${state.data.gender==="male"?"👨":"👩"}</div><div class="flex-1"><p class="font-bold text-slate-100 text-lg">${state.data.gender==="male"?"Erkak":"Ayol"} &middot; ${state.data.height} sm &middot; ${state.data.weight} kg</p><p class="text-slate-400 text-sm">Maqsad: <strong class="text-emerald-400">${goalNames[state.data.goal]}</strong> &middot; <strong class="text-cyan-400">${state.data.targetWeight} kg</strong> ga &middot; <strong class="text-violet-400">${state.data.duration} hafta</strong> ichida</p><p class="text-slate-500 text-xs mt-0.5">Faollik: ${actLabel}</p></div><div class="flex-shrink-0 text-right"><p class="text-sm text-slate-500">Maqsadli kalori</p><p class="text-2xl font-black grad-text">${targetK.toLocaleString()}</p><p class="text-xs text-slate-500">kkal/kun</p></div>`;
+  document.getElementById("summary-banner").innerHTML=`<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center flex-shrink-0 text-2xl">${state.data.gender==="male"?"👨":"👩"}</div><div class="flex-1"><p class="font-bold text-slate-100 text-lg">${escapeHTML(state.data.name||"Foydalanuvchi")} &middot; ${state.data.gender==="male"?"Erkak":"Ayol"} &middot; ${state.data.age} yosh &middot; ${state.data.height} sm &middot; ${state.data.weight} kg</p><p class="text-slate-400 text-sm">Maqsad: <strong class="text-emerald-400">${goalNames[state.data.goal]}</strong> &middot; <strong class="text-cyan-400">${state.data.targetWeight} kg</strong> ga &middot; <strong class="text-violet-400">${state.data.duration} hafta</strong> ichida</p><p class="text-slate-500 text-xs mt-0.5">Faollik: ${actLabel}</p></div><div class="flex-shrink-0 text-right"><p class="text-sm text-slate-500">Maqsadli kalori</p><p class="text-2xl font-black grad-text">${targetK.toLocaleString()}</p><p class="text-xs text-slate-500">kkal/kun</p></div>`;
   const penalties=[];
   if(state.data.sleep<7)penalties.push({icon:"😴",color:"border-amber-500",bg:"bg-amber-500/5",title:"Metabolizm sekinlashuvi va kortizol xavfi",desc:`Uyqu ${state.data.sleep} soat (tavsiya: 7-9 soat). Kortizol oshadi, yog\x27 yo\x27qotish ~10% ga samarasizlashadi.`,badge:"-10% samaradorlik"});
   if(state.data.water<optWater)penalties.push({icon:"💧",color:"border-cyan-500",bg:"bg-cyan-500/5",title:"Suvsizlanish va lipoliz unumi pasayishi",desc:`Hozirgi suv: ${state.data.water.toFixed(1)} L, optimal: ${optWater.toFixed(1)} L. Suvsizlanish lipoliz va moddalar almashinuvini sekinlashtiradi.`,badge:"Jarima aktiv"});
@@ -433,7 +507,7 @@ function showDashboard(){
   if(lChart)lChart.destroy();
   lChart=new Chart(document.getElementById("lineChart"),{ type:"line", data:{ labels:lbls, datasets:[{ label:"Prognoz vazn (kg)", data:proj, borderColor:"#10b981", backgroundColor:"rgba(16,185,129,.1)", borderWidth:2.5, pointRadius:proj.length>24?0:3, pointBackgroundColor:"#10b981", fill:true, tension:0.4 }] }, options:{ responsive:true, plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw} kg`}}}, scales:{ x:{ticks:{color:isLight?"#64748b":"#475569",maxTicksLimit:8,font:{size:10}},grid:{color:isLight?"#e2e8f0":"#1e293b"}}, y:{ticks:{color:isLight?"#64748b":"#475569",font:{size:10}},grid:{color:isLight?"#e2e8f0":"#1e293b"}} }, animation:{duration:1200} } });
   const stp=Math.max(1,Math.ceil(state.data.duration/20));let rows="";
-  for(let w=0;w<=state.data.duration;w+=stp){const idx=Math.min(w,proj.length-1),wv=proj[idx],prev=proj[Math.max(0,idx-stp)],ch=(wv-prev).toFixed(2),done=Math.abs(wv-state.data.targetWeight)<0.5;rows+=`<tr><td class="py-2 pr-4 text-slate-400">H${w}</td><td class="py-2 pr-4 text-right font-semibold text-slate-200">${wv}</td><td class="py-2 pr-4 text-right ${+ch<0?"text-rose-400":+ch>0?"text-emerald-400":"text-slate-500"}">${+ch>0?"+":""}${ch}</td><td class="py-2 text-right">${done?"<span class=\"text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold\">Maqsad!</span>":"<span class=\"text-xs text-slate-600\">&mdash;</span>"}</td></tr>`}
+  for(let w=0;w<=state.data.duration;w+=stp){const idx=Math.min(w,proj.length-1),wv=proj[idx],prev=proj[Math.max(0,idx-stp)],ch=(wv-prev).toFixed(2),done=Math.abs(wv-state.data.targetWeight)<0.5;rows+=`<tr><td class="py-2 pr-4 text-slate-400">H${w}</td><td class="py-2 pr-4 text-right font-semibold text-slate-200">${wv}</td><td class="py-2 pr-4 text-right ${+ch<0?"text-rose-400":+ch>0?"text-emerald-400":"text-slate-500"}">${+ch>0?:'}${ch}</td><td class="py-2 text-right">${done?"<span class=\"text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold\">Maqsad!</span>":"<span class=\"text-xs text-slate-600\">&mdash;</span>"}</td></tr>`}
   document.getElementById("milestone-table").innerHTML=rows;
   buildRecommendations(bmi,bmr,tdee,targetK,optWater,bju);
   window.scrollTo({top:0,behavior:"smooth"});
@@ -454,10 +528,18 @@ function buildRecommendations(bmi,bmr,tdee,targetK,optWater,bju){
 document.addEventListener("DOMContentLoaded",()=>{
   const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || "dark";
   applyTheme(savedTheme);
-  initVisitorSession();
   updateNavBadge();
-  renderDots();
-  renderStep();
+  const savedUser = localStorage.getItem(STORAGE_KEY_USER);
+  if(savedUser){
+    try{
+      const u = JSON.parse(savedUser);
+      if(u && u.name && u.age){
+        state.data.name = u.name; state.data.age = u.age;
+        document.getElementById("login-name-input").value = u.name;
+        document.getElementById("login-age-input").value = u.age;
+      }
+    }catch(e){}
+  }
 });
 </script>
 </body>
