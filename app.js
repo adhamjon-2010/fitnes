@@ -969,7 +969,7 @@ function buildRecommendations(bmi, bmr, tdee, targetK, optWater, bju) {
   `).join("");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function initApp() {
   const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || "dark";
   applyTheme(savedTheme);
   updateNavBadge();
@@ -988,4 +988,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch(e) {}
   }
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
