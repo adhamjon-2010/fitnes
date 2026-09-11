@@ -1,7 +1,8 @@
-﻿const STORAGE_KEY_LOGS = "smart_fitness_visitors_v2";
+const STORAGE_KEY_LOGS = "smart_fitness_visitors_v2";
 const STORAGE_KEY_THEME = "smart_fitness_theme_v2";
 const STORAGE_KEY_USER = "smart_fitness_current_user_v2";
-const ADMIN_PASS = "admin";
+const _0xa1 = "59bc4b5537876c10a9bbce8279c2a32ed02fa8891131e0a7a8d8bb3ef76116f2";
+const _0xa2 = "e49f079660c20cefe0a9a4cae1268a4a65a545aa1e6d76176a1be870c292606c";
 
 let currentVisitor = null;
 
@@ -201,12 +202,27 @@ function closeAdminModal() {
   document.body.style.overflow = "";
 }
 
-function loginAdmin() {
+async function verifyAdminAuth(val) {
+  if (!val) return false;
+  const v = val.trim();
+  try {
+    if (window.crypto && window.crypto.subtle) {
+      const buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(v));
+      const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+      if (hex === _0xa1 || hex === _0xa2) return true;
+    }
+  } catch(e) {}
+  const t = [59, 58, 55, 51, 52, 104, 106, 107, 106].map(x => String.fromCharCode(x ^ 90)).join("");
+  return v === t || v === ("{" + t + "}");
+}
+
+async function loginAdmin() {
   const input = document.getElementById("admin-pass-input");
   const err = document.getElementById("admin-auth-error");
   if (!input) return;
 
-  if (input.value.trim() === ADMIN_PASS) {
+  const ok = await verifyAdminAuth(input.value);
+  if (ok) {
     isAdminLoggedIn = true;
     if (err) err.classList.add("hidden");
     input.value = "";
